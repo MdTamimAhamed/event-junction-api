@@ -5,11 +5,13 @@ const EndUser = require("../model/userSchema");
 async function signupUser(req, res, next) {
   const salt = await bcrypt.genSalt(10);
   const hashPasswrod = await bcrypt.hash(req.body.password, salt); //pass hash
+  const hashConfirmPass = await bcrypt.hash(req.body.confirmPass, salt);
 
   //new user created
   const newUser = EndUser({
     ...req.body,
     password: hashPasswrod,
+    confirmPass: hashConfirmPass,
   });
 
   try {
