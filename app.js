@@ -7,6 +7,7 @@ const {
   errorHandler,
 } = require("./middlewares/common/errorHandler");
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //routes
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 
 //error handlers
 app.use(notFoundHandler); //404 handler
