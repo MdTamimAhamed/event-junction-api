@@ -1,8 +1,9 @@
 const { check, validationResult } = require("express-validator");
 const { EndUser, EndAdmin } = require("../model/userSchema");
 const createError = require("http-errors");
+const { accessKeys } = require("../controller/accessKeyController");
 
-//user validation
+//@user validation
 const userSignupValidators = [
   check("firstName")
     .isLength({ min: 1 })
@@ -49,7 +50,7 @@ function userSignupValidatorsErrorHandler(req, res, next) {
   }
 }
 
-//admin validation
+//@admin validation
 const adminSignupValidators = [
   check("firstName")
     .isLength({ min: 1 })
@@ -70,20 +71,6 @@ const adminSignupValidators = [
         throw createError(err.message);
       }
     }),
-  check("accessToken")
-    .isLength({ min: 6 })
-    .withMessage("Enter 6 digit (xxx-xxx) access key!")
-    .trim()
-    .custom(async (token) => {
-      try {
-        const isTokenExist = await EndAdmin.findOne({ accessToken: token });
-        if (isTokenExist) {
-          throw createError("This access-token already registerd!");
-        }
-      } catch (err) {
-        throw createError(err.message);
-      }
-    }),
   check("password")
     .isLength({ min: 6 })
     .withMessage("Password must be 6 characters!"),
@@ -93,6 +80,22 @@ const adminSignupValidators = [
       throw createError("Password did not matched!");
     }
   }),
+  check("accessKey")
+    .isLength({ max: 7 })
+    .withMessage("Enter 6 digit (xxx-xxx) access key!")
+    .trim()
+    .custom(async (accessKey) => {
+      try {
+        const isKeyExist = await EndAdmin.findOne({ accessKey: accessKey });
+        if (!accessKeys.includes(accessKey)) {
+          throw createError("Wrong Access Token!");
+        } else if (accessKeys.includes(accessKey) && isKeyExist) {
+          throw createError("Token Already taken!");
+        }
+      } catch (err) {
+        throw createError(err.message);
+      }
+    }),
 ];
 
 function adminSignupValidatorsErrorHandler(req, res, next) {

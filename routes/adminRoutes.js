@@ -1,17 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const { signupAdmin } = require("../controller/userController");
+const { signupAdmin, loginAdmin } = require("../controller/userController");
 const {
   adminSignupValidators,
   adminSignupValidatorsErrorHandler,
 } = require("../validators/signupValidator");
 
+const {
+  adminLoginValidators,
+  adminLoginValidatorErrorHandler,
+} = require("../validators/loginValidator");
+
 router.post(
-  "/admin-signup",
+  "/signup",
   adminSignupValidators,
   adminSignupValidatorsErrorHandler,
   signupAdmin
 );
-router.post("/admin-login");
+router.post(
+  "/login",
+  adminLoginValidators,
+  adminLoginValidatorErrorHandler,
+  loginAdmin
+);
 
 module.exports = router;

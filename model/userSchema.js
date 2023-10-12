@@ -18,10 +18,6 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  confirmPass: {
-    type: String,
-    require: true,
-  },
 });
 
 const adminSchema = mongoose.Schema({
@@ -41,11 +37,7 @@ const adminSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  confirmPass: {
-    type: String,
-    require: true,
-  },
-  accessToken: {
+  accessKey: {
     type: String,
     require: true,
   },
