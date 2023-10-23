@@ -11,6 +11,12 @@ const {
   adminLoginValidatorErrorHandler,
 } = require("../validators/loginValidator");
 
+const {
+  uploadToStorage,
+  handleUploadedFile,
+  getEventDetails,
+} = require("../controller/eventController");
+
 router.post(
   "/signup",
   adminSignupValidators,
@@ -23,5 +29,13 @@ router.post(
   adminLoginValidatorErrorHandler,
   loginAdmin
 );
+
+router.post(
+  "/add-event",
+  uploadToStorage.single("thumbnail"),
+  handleUploadedFile
+);
+
+router.get("/get-event", getEventDetails);
 
 module.exports = router;
