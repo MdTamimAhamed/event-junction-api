@@ -30,8 +30,13 @@ const eventCreationSchema = mongoose.Schema({
     require: true,
   },
   speaker: {
-    type: String,
+    type: [String],
     require: true,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Club-Admin",
+    required: true,
   },
 });
 

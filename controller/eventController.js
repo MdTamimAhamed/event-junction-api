@@ -22,12 +22,9 @@ const uploadToStorage = multer({ storage: storage });
 //save image
 async function handleUploadedFile(req, res) {
   try {
-    // Check if a file is uploaded
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded!" });
     }
-
-    // Create a new event with the title and thumbnail
     const {
       title,
       swagItems,
@@ -36,19 +33,24 @@ async function handleUploadedFile(req, res) {
       eventTimes,
       venue,
       speaker,
+      authorId,
     } = req.body;
 
     const splitedSwagItems = swagItems.split(",");
+    const splitedDates = eventDates.split(",");
+    const splitedTimes = eventTimes.split(",");
+    const splitedSpeakers = speaker.split(",");
 
     const event = new EndEvent({
       eventTitle: title,
       eventThumbnail: req.file.filename,
       eventType: eventType,
       swagItems: splitedSwagItems,
-      dates: eventDates,
-      times: eventTimes,
+      dates: splitedDates,
+      times: splitedTimes,
       venue: venue,
-      speaker: speaker,
+      speaker: splitedSpeakers,
+      author: authorId,
     });
 
     console.log(`newevent: ${event}`);
@@ -66,20 +68,34 @@ async function handleUploadedFile(req, res) {
   }
 }
 
-//find image + details
+//find details
 async function getEventDetails(req, res) {
+  const { authorId, eventId } = req.query;
   try {
-    const events = await EndEvent.find();
-    console.log(events);
-    res.status(200).json(events);
+    if (authorId) {
+      const events = await EndEvent.find({ author: authorId });
+      res.status(200).json(events);
+    }
+    if (eventId) {
+      const events = await EndEvent.findById(eventId);
+      console.log(events);
+      res.status(200).json(events);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error fetching events" });
   }
 }
 
+//edit event
+async function updateEvents(req, res) {
+  try {
+  } catch (err) {}
+}
+
 module.exports = {
   uploadToStorage,
   handleUploadedFile,
   getEventDetails,
+  updateEvents,
 };

@@ -75,6 +75,7 @@ async function loginUser(req, res, next) {
           lastName: isUserExist.lastName,
           email: isUserExist.email,
           _id: isUserExist._id,
+          role: "Client",
         };
 
         //token generate
@@ -85,7 +86,6 @@ async function loginUser(req, res, next) {
         //send response
         res.status(200).json({
           message: "Login Successfull!",
-          userDetails,
           token,
         });
       } else {
@@ -122,6 +122,7 @@ async function loginAdmin(req, res, next) {
           lastName: isAdminExist.lastName,
           email: isAdminExist.email,
           _id: isAdminExist._id,
+          role: "Admin",
         };
 
         //token generate
@@ -132,7 +133,6 @@ async function loginAdmin(req, res, next) {
         //send response
         res.status(200).json({
           message: "Admin login successfull!",
-          adminDetails,
           token,
         });
       } else {

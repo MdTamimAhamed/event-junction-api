@@ -15,8 +15,10 @@ const {
   uploadToStorage,
   handleUploadedFile,
   getEventDetails,
+  updateEvents,
 } = require("../controller/eventController");
 
+//routes
 router.post(
   "/signup",
   adminSignupValidators,
@@ -37,5 +39,6 @@ router.post(
 );
 
 router.get("/get-event", getEventDetails);
+router.put("/edit", updateEvents);
 
 module.exports = router;
